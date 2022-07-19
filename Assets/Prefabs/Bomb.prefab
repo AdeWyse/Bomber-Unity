@@ -126,3 +126,5 @@ MonoBehaviour:
   count: 0
   waitTime: 1
   start: 0
+  explosion: {fileID: 8923239247510390904, guid: dac4e3fd44eae8e4b90de14156800f7d,
+    type: 3}

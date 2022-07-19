@@ -7,6 +7,7 @@ public class Bomb : MonoBehaviour
     public int count = 0;
     public int waitTime = 1;
     public bool start = false;
+    public GameObject explosion;
 
     private GameObject bomb;
     //Checks if the bomb is on the ground and starts countdown to explosion
@@ -67,6 +68,8 @@ public class Bomb : MonoBehaviour
                 }
             }
         }
+        Vector3 explosionPos = new Vector3(bomb.transform.position.x, bomb.transform.position.y, bomb.transform.position.z);
+        Instantiate(explosion, explosionPos, Quaternion.identity);
         Destroy(bomb);
     }
 }

@@ -9,6 +9,7 @@ TagManager:
   - wall
   - player
   - npc
+  - bomb
   layers:
   - Default
   - TransparentFX
