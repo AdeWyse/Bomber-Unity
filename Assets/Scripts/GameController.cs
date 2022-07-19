@@ -12,6 +12,8 @@ public class GameController : MonoBehaviour
     private Slider numberCharSlider;
     private Toggle controllableToggle;
 
+    
+
     // Start is called before the first frame update
     void Start()
     {
