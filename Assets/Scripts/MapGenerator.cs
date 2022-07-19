@@ -9,6 +9,8 @@ public class MapGenerator : MonoBehaviour
     public int gridXSize = 10;
     public int gridZSize = 10;
     public Vector3[,] gridPos;
+    public GameObject[,] secondLayerObjects;
+    public bool[,] isInSecondLayer;
 
     private GameController gameController;
     public int numberChar;
@@ -21,6 +23,8 @@ public class MapGenerator : MonoBehaviour
     void Start()
     {
         gridPos = new Vector3[gridXSize,gridZSize];
+        secondLayerObjects = new GameObject[gridXSize , gridZSize];
+        isInSecondLayer = new bool[gridXSize, gridZSize];
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
         //Initializes the array containing the grid coodinates of the inital positions for the characters
         charactersInitialPos = new int[4, 2];
@@ -36,12 +40,6 @@ public class MapGenerator : MonoBehaviour
 
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void generateMap(){
         numberChar = gameController.numberChar;
         if(numberChar == 0)
@@ -50,8 +48,9 @@ public class MapGenerator : MonoBehaviour
         }
         isControllable = gameController.isControllable;
         generateFloorGrid();
-        generateSecondLayer(characterSelection(numberChar, isControllable));
-        ;
+        GameObject[] characters = characterSelection(numberChar, isControllable);
+        generateSecondLayer(characters);
+        CheckCharacterPos(characters);
     }
 
     //Generates the second layer of objects. It includes walls, obstacles and  characters. It needs an array whith the characters that are gonna be created
@@ -82,14 +81,71 @@ public class MapGenerator : MonoBehaviour
         for (int i = 0; i < gridXSize; i++)
         {
             for (int j = 0; j < gridZSize; j++)
-            { int random = Random.Range(0, 3);
+            { int random = Probability.ItemProbability();
                 var position = new Vector3(this.gridPos[i, j].x, 1.002f, this.gridPos[i, j].z);
                 if(random != 2 && gridPositionSpawned[i,j].y != 5)
                 {
                      var spawnedObject = Instantiate(toSpawn[Random.Range(0,2)], position, Quaternion.identity);
+                    isInSecondLayer[i,j] = true;
+                    secondLayerObjects[i,j] = spawnedObject;
                 }
             }
 
+        }
+    }
+
+    private void CheckCharacterPos(GameObject[] characters)
+    {
+        for(int i = 0; i < characters.Length; i++)
+        {
+            switch (i)
+            {
+                case 0:
+                    if (isInSecondLayer[charactersInitialPos[i, 0] + 1, charactersInitialPos[i, 1]])
+                    {
+                        GameObject.Destroy(secondLayerObjects[charactersInitialPos[i, 0] + 1, charactersInitialPos[i, 1]]);
+                    }
+                    if (isInSecondLayer[charactersInitialPos[i, 0] + 2, charactersInitialPos[i, 1]])
+                    {
+                        GameObject.Destroy(secondLayerObjects[charactersInitialPos[i, 0] + 2, charactersInitialPos[i, 1]]);
+                    }
+                    break;
+                case 1:
+                    if (isInSecondLayer[charactersInitialPos[i, 0], charactersInitialPos[i, 1] - 1])
+                    {
+                        GameObject.Destroy(secondLayerObjects[charactersInitialPos[i, 0], charactersInitialPos[i, 1] - 1]);
+                    }
+                    if(isInSecondLayer[charactersInitialPos[i, 0], charactersInitialPos[i, 1] - 2])
+                    {
+                        GameObject.Destroy(secondLayerObjects[charactersInitialPos[i, 0], charactersInitialPos[i, 1] - 2]);
+                    }
+                    break;
+                case 2:
+                    if (isInSecondLayer[charactersInitialPos[i, 0], charactersInitialPos[i, 1] + 1])
+                    {
+                        GameObject.Destroy(secondLayerObjects[charactersInitialPos[i, 0] , charactersInitialPos[i, 1] + 1]);
+                    }
+                    if (isInSecondLayer[charactersInitialPos[i, 0] , charactersInitialPos[i, 1]  +2])
+                    {
+                        GameObject.Destroy(secondLayerObjects[charactersInitialPos[i, 0], charactersInitialPos[i, 1] + 2]);
+                    }
+                    break;
+                case 3:
+                    if (isInSecondLayer[charactersInitialPos[i, 0] - 1, charactersInitialPos[i, 1]])
+                    {
+                        GameObject.Destroy(secondLayerObjects[charactersInitialPos[i, 0] - 1, charactersInitialPos[i, 1] ]);
+
+                    }
+                    if (isInSecondLayer[charactersInitialPos[i, 0] - 2 , charactersInitialPos[i, 1]])
+                    {
+                        GameObject.Destroy(secondLayerObjects[charactersInitialPos[i, 0] - 2, charactersInitialPos[i, 1]]);
+
+                    }
+                    break;
+                 default :
+                    break;
+            }
+            
         }
     }
 
