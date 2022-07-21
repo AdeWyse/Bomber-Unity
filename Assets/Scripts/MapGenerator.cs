@@ -6,8 +6,8 @@ public class MapGenerator : MonoBehaviour
     public GameObject wall;
     public GameObject floor;
     public GameObject[] characters;
-    public int gridXSize = 10;
-    public int gridZSize = 10;
+    public int gridXSize;
+    public int gridZSize;
     public Vector3[,] gridPos;
     public GameObject[,] secondLayerObjects;
     public bool[,] isInSecondLayer;
@@ -22,10 +22,12 @@ public class MapGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        gameController = GameObject.Find("GameController").GetComponent<GameController>();
+        gridXSize = gameController.gridXSize;
+        gridZSize = gameController.gridZSize;
         gridPos = new Vector3[gridXSize,gridZSize];
         secondLayerObjects = new GameObject[gridXSize , gridZSize];
         isInSecondLayer = new bool[gridXSize, gridZSize];
-        gameController = GameObject.Find("GameController").GetComponent<GameController>();
         //Initializes the array containing the grid coodinates of the inital positions for the characters
         charactersInitialPos = new int[4, 2];
 

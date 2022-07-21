@@ -12,7 +12,10 @@ public class GameController : MonoBehaviour
     private Slider numberCharSlider;
     private Toggle controllableToggle;
 
-    
+    public int gridXSize = 10;
+    public int gridZSize = 10;
+
+
 
     // Start is called before the first frame update
     void Start()
