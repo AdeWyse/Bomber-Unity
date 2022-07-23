@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour
         Vector3 moveHorizontal = player.transform.position;
         Vector3 moveVertical = player.transform.position;
         //Checks to see if there is input(w/s/up/down)
-        if (Input.GetAxis("Vertical") != 0)
+        if (Input.GetAxis("Vertical") != 0 && Input.GetAxis("Horizontal") == 0)
         {
             //Sets the direction of movement (up or down relative to the camera)and speed
             float directionVertical = Input.GetAxis("Vertical") * speed * Time.deltaTime;
@@ -38,12 +38,13 @@ public class PlayerController : MonoBehaviour
             {
                 //New position
                 moveVertical = new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z + directionVertical); //z
+                ControlRotation();
                 
             }
             player.transform.position = moveVertical;
         }
         //Checks to see if there is input(a/d/left/right)
-        if (Input.GetAxis("Horizontal") != 0)
+        if (Input.GetAxis("Horizontal") != 0 && Input.GetAxis("Vertical") == 0)
         {
             //Sets the direction pf movement (left or right relative to the camera) and speed
             float directionHorizontal = Input.GetAxis("Horizontal") * speed * Time.deltaTime;
@@ -52,9 +53,30 @@ public class PlayerController : MonoBehaviour
             {
                 //New position
                 moveHorizontal = new Vector3(player.transform.position.x + directionHorizontal, player.transform.position.y, player.transform.position.z); //x
+                ControlRotation();
 
             }
             player.transform.position = moveHorizontal;
+        }
+    }
+
+    private void ControlRotation()
+    {
+        if(Input.GetAxis("Vertical") > 0)
+        {
+            player.transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
+        if(Input.GetAxis("Vertical") < 0)
+        {
+            player.transform.rotation = Quaternion.Euler(0, 180, 0);
+        }
+        if (Input.GetAxis("Horizontal") > 0)
+        {
+            player.transform.rotation = Quaternion.Euler(0, 90, 0);
+        }
+        if (Input.GetAxis("Horizontal") < 0)
+        {
+            player.transform.rotation = Quaternion.Euler(0, -90, 0);
         }
     }
 }
